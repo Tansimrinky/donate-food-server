@@ -33,6 +33,7 @@ async function run() {
 
     const foodCollection = client.db("foodDB").collection("foods")
     const requestedFoodCollection = client.db("reqDB").collection("requested")
+    const deliveredCollection = client.db("delDB").collection("delivered")
 
      app.put('/foods/:id', async(req, res) => {
       const id = req.params.id;
@@ -112,6 +113,16 @@ async function run() {
         res.status(500).json({ success: false, message: 'Internal server error.' });
       }
     });
+
+    app.delete('/reqfood/:id', async(req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id)};
+      const result = await requestedFoodCollection.deleteOne(query);
+      res.send(result)
+    })
+
+
+
 
 
     // Send a ping to confirm a successful connection
